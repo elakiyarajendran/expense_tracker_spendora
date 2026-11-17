@@ -1,0 +1,182 @@
+[
+  {
+    "id": "TC-01",
+    "module": "Authentication",
+    "title": "User Registration with Valid Credentials (FR-LOG-06)",
+    "expected": "HTTP 201 Created, returns user info and JWT token pair",
+    "actual": "HTTP 201, User registered with ID 5",
+    "status": "PASS",
+    "time_ms": 1629.96
+  },
+  {
+    "id": "TC-02",
+    "module": "Authentication",
+    "title": "Registration Validation - Password Mismatch (FR-LOG-06)",
+    "expected": "HTTP 400 Bad Request with \"Passwords do not match\"",
+    "actual": "HTTP 400: Passwords do not match.",
+    "status": "PASS",
+    "time_ms": 22.35
+  },
+  {
+    "id": "TC-03",
+    "module": "Authentication",
+    "title": "Registration Validation - Duplicate Email Prevention (FR-LOG-06)",
+    "expected": "HTTP 400 Bad Request rejecting duplicate registered email",
+    "actual": "HTTP 400: user with this email already exists.",
+    "status": "PASS",
+    "time_ms": 7.14
+  },
+  {
+    "id": "TC-04",
+    "module": "Authentication",
+    "title": "User Login & JWT Token Pair Generation (FR-LOG-03)",
+    "expected": "HTTP 200 OK with valid JWT access and refresh tokens",
+    "actual": "HTTP 200, Token generated successfully",
+    "status": "PASS",
+    "time_ms": 1006.28
+  },
+  {
+    "id": "TC-05",
+    "module": "Authentication",
+    "title": "Generic Error for Invalid Credentials (FR-LOG-05)",
+    "expected": "HTTP 400 with generic \"Invalid email or password.\" without revealing email vs password",
+    "actual": "HTTP 400, Returned generic error message",
+    "status": "PASS",
+    "time_ms": 977.6
+  },
+  {
+    "id": "TC-06",
+    "module": "Authentication",
+    "title": "Account Lockout for 15 Min After 5 Failed Logins (FR-LOG-08)",
+    "expected": "HTTP 400 with \"Account is temporarily locked due to 5 failed attempts\"",
+    "actual": "HTTP 400, Account locked for 15 minutes as enforced",
+    "status": "PASS",
+    "time_ms": 3976.82
+  },
+  {
+    "id": "TC-07",
+    "module": "Authentication",
+    "title": "JWT Access Token Refresh via Refresh Token (FR-LOG-04)",
+    "expected": "HTTP 200 OK with new JWT access token",
+    "actual": "HTTP 200, New access token issued successfully",
+    "status": "PASS",
+    "time_ms": 13.4
+  },
+  {
+    "id": "TC-08",
+    "module": "Categories",
+    "title": "Default Categories Retrieval (FR-EXP-04)",
+    "expected": "HTTP 200 OK containing at least 8 default categories",
+    "actual": "HTTP 200, Retrieved 9 categories including Food, Travel, Bills",
+    "status": "PASS",
+    "time_ms": 11.2
+  },
+  {
+    "id": "TC-09",
+    "module": "Categories",
+    "title": "Create Custom User Category (FR-EXP-05)",
+    "expected": "HTTP 201 Created with custom category attributes",
+    "actual": "HTTP 201, Created category 'Tech Gadgets' (ID: 12)",
+    "status": "PASS",
+    "time_ms": 26.06
+  },
+  {
+    "id": "TC-10",
+    "module": "Expenses",
+    "title": "Record New Expense with Valid Fields (FR-EXP-01, FR-EXP-06)",
+    "expected": "HTTP 201 Created with saved expense record",
+    "actual": "HTTP 201, Expense saved with ID 26 (Amount: \u20b93499.00)",
+    "status": "PASS",
+    "time_ms": 27.66
+  },
+  {
+    "id": "TC-11",
+    "module": "Expenses",
+    "title": "Expense Field Validations (No Future Dates, Amount > 0) (FR-EXP-02, FR-EXP-03)",
+    "expected": "HTTP 400 Bad Request rejecting future dates and non-positive amounts",
+    "actual": "HTTP 400 returned for future date ('2026-11-18') and zero amount ('0.00')",
+    "status": "PASS",
+    "time_ms": 24.26
+  },
+  {
+    "id": "TC-12",
+    "module": "Expenses",
+    "title": "Update Existing Expense Details via PUT (FR-EXP-08)",
+    "expected": "HTTP 200 OK with updated expense data",
+    "actual": "HTTP 200, Amount updated to \u20b93299.00, title updated",
+    "status": "PASS",
+    "time_ms": 24.49
+  },
+  {
+    "id": "TC-13",
+    "module": "Expenses",
+    "title": "Delete Expense with Confirmation (FR-EXP-09, FR-HOM-08)",
+    "expected": "HTTP 200 OK on delete, subsequent GET returns HTTP 404 Not Found",
+    "actual": "HTTP 200 delete, GET returned 404 as expected",
+    "status": "PASS",
+    "time_ms": 59.3
+  },
+  {
+    "id": "TC-14",
+    "module": "Security & Isolation",
+    "title": "User Data Isolation & Access Authorization (FR-EXP-11, NFR-03)",
+    "expected": "HTTP 404 Not Found when User B attempts to view/modify User A data",
+    "actual": "HTTP 404 on access attempt. Strict user isolation confirmed.",
+    "status": "PASS",
+    "time_ms": 1016.52
+  },
+  {
+    "id": "TC-15",
+    "module": "Milestones",
+    "title": "Create Spending Limit with Date Validations (FR-MIL-01, FR-MIL-02)",
+    "expected": "Rejects end_date <= start_date (400), creates valid limit (201)",
+    "actual": "HTTP 400 on invalid date range; HTTP 201 on valid creation (ID: 13)",
+    "status": "PASS",
+    "time_ms": 48.65
+  },
+  {
+    "id": "TC-16",
+    "module": "Milestones",
+    "title": "Spending Limit 80% Warning Alert (FR-EXP-10, FR-MIL-07)",
+    "expected": "API returns warning alert when spend reaches 80% of limit target",
+    "actual": "Triggered warning alert at 82.5%: '\u26a0\ufe0f Notice: Spending limit 'Dining & Coffee Limit' has reached 82.5% of its cap.'",
+    "status": "PASS",
+    "time_ms": 33.0
+  },
+  {
+    "id": "TC-17",
+    "module": "Milestones",
+    "title": "Spending Limit Exceeded (>100%) Status & Alert (FR-EXP-10, FR-MIL-06)",
+    "expected": "Status transitions to EXCEEDED and raises danger alert",
+    "actual": "Status: EXCEEDED, Progress: 107.5%, Alert: danger",
+    "status": "PASS",
+    "time_ms": 60.91
+  },
+  {
+    "id": "TC-18",
+    "module": "Milestones",
+    "title": "Create Savings Goal & Add Savings Contribution (FR-MIL-01, FR-MIL-05)",
+    "expected": "HTTP 201 for Goal & Contribution, progress increments accurately to 33.3%",
+    "actual": "HTTP 201, Saved \u20b95000 of \u20b915000 (33.3% progress calculated)",
+    "status": "PASS",
+    "time_ms": 59.13
+  },
+  {
+    "id": "TC-19",
+    "module": "Milestones",
+    "title": "Savings Goal Achievement & Celebration Trigger (FR-MIL-06, FR-MIL-10)",
+    "expected": "Status switches to ACHIEVED, is_newly_achieved is True (triggers confetti)",
+    "actual": "Status: ACHIEVED, is_newly_achieved: True, Progress: 100%",
+    "status": "PASS",
+    "time_ms": 39.38
+  },
+  {
+    "id": "TC-20",
+    "module": "Dashboard & Reporting",
+    "title": "Dashboard Summary Totals, Donut Breakdown & 6-Month Trend (FR-HOM-02 to FR-HOM-07)",
+    "expected": "HTTP 200 with summary totals, categories breakdown, 6 monthly trend buckets, active alerts",
+    "actual": "HTTP 200, Total Spent: \u20b95449.0, Total Saved: \u20b915000.0, 6-mo Trend: 6 buckets, Alerts: 2",
+    "status": "PASS",
+    "time_ms": 116.65
+  }
+]
